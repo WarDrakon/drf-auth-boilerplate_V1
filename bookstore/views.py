@@ -8,13 +8,13 @@ from .serializers import AuthorSerializer, BookSerializer
 class AuthorViewSet(viewsets.ReadOnlyModelViewSet):
     """Публічний довідник авторів: читати може будь-хто. Не змінюйте права тут."""
 
-    queryset = Author.objects.all()
+    queryset = Author.objects.all().order_by("id")
     serializer_class = AuthorSerializer
     permission_classes = [permissions.AllowAny]
 
 
 class BookViewSet(viewsets.ModelViewSet):
-    queryset = Book.objects.all()
+    queryset = Book.objects.select_related("author", "owner")
     serializer_class = BookSerializer
     permission_classes = [EduDomainPermission]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
