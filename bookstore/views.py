@@ -1,4 +1,5 @@
 from rest_framework import filters, permissions, viewsets
+from .permissions import EduDomainPermission
 
 from .models import Author, Book
 from .serializers import AuthorSerializer, BookSerializer
@@ -15,6 +16,7 @@ class AuthorViewSet(viewsets.ReadOnlyModelViewSet):
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [EduDomainPermission]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["title", "author__name"]
     ordering_fields = ["price", "title"]
